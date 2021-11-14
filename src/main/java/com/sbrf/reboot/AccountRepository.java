@@ -1,4 +1,8 @@
 package com.sbrf.reboot;
 
-public abstract class AccountRepository {
+import java.util.Set;
+
+public interface AccountRepository {
+
+    Set<Account> getAllAccountsByClientId(long l);
 }

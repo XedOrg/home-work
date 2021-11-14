@@ -1,13 +1,10 @@
 package com.sbrf.reboot;
 
-public class Account implements AccountService{
-    @Override
-    public void bookExist() {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-    }
-
-    @Override
-    public void bookNotExist() {
-
-    }
+@AllArgsConstructor
+public class Account {
+    @Getter
+    private String accountNum;
 }

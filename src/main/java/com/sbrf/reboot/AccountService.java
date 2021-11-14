@@ -1,7 +1,12 @@
 package com.sbrf.reboot;
 
-public interface AccountService {
+import lombok.AllArgsConstructor;
 
-    void bookExist();
-    void bookNotExist();
+@AllArgsConstructor
+public class AccountService {
+    private AccountRepository accountRepository;
+
+    public boolean isAccountExist(long l, Account account) {
+        return accountRepository.getAllAccountsByClientId(l).contains(account);
+    }
 }
