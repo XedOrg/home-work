@@ -8,24 +8,29 @@ import java.util.*;
 
 @AllArgsConstructor
 public class AccountRepositoryImpl implements AccountRepository {
-    private static final String fileName = "Accounts.txt";
+    private static final String FILE_NAME = "Accounts.txt";
 
     @Override
     public Set<Account> getAllAccountsByClientId(long l) {
         Set<Account> result = new HashSet<>();
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(FILE_NAME);
         if (inputStream == null) {
-            throw new IllegalArgumentException("file not found: " + fileName);
+            throw new IllegalArgumentException("file not found: " + FILE_NAME);
         }
         try (InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
              BufferedReader bufferedReader = new BufferedReader(streamReader)
         ) {
-            ArrayList<String> splitAccount = new ArrayList<>();
-            bufferedReader.lines().forEach(account -> splitAccount.add(account));
-            if (splitAccount.isEmpty()) {
-                throw new IllegalArgumentException(fileName + " file is empty");
+            ArrayList<String> splitAccounts = new ArrayList<>();
+            bufferedReader.lines().forEach(account -> splitAccounts.addAll(Arrays.asList(account.split(";"))));
+            if (splitAccounts.isEmpty()) {
+                throw new IllegalArgumentException(FILE_NAME + " file is empty");
             }
-            splitAccount.stream().forEach(num -> result.add(new Account(num)));
+            splitAccounts.stream().forEach(s -> {
+                String[] AccountArray = s.split("-");
+                if (Long.parseLong(AccountArray[0]) == l) {
+                    result.add(new Account(AccountArray[1]));
+                }
+            });
 
         } catch (IOException e) {
             e.printStackTrace();
